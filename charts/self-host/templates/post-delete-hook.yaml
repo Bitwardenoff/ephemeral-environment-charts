@@ -9,6 +9,11 @@ metadata:
     "helm.sh/hook": post-delete
     "helm.sh/hook-weight": "0"
     "helm.sh/hook-delete-policy": hook-succeeded,hook-failed,before-hook-creation
+    {{- if .Values.argoCDSupport }}
+    argocd.argoproj.io/hook: PostDelete
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded,BeforeHookCreation
+    {{ end }}
+
 spec:
   template:
     metadata:
