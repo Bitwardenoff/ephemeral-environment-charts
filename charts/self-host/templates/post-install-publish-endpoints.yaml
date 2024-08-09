@@ -1,0 +1,41 @@
+# Publishes the URI endpoints for the environment to a comment of the GitHub pull request.
+---
+kind: Job
+metadata:
+  name: "{{ .Release.Name }}-publish-endpoints-github"
+  labels:
+    app.kubernetes.io/component: post-install-publish-endpoints
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "1"
+    "helm.sh/hook-delete-policy": before-hook-creation
+    {{- if .Values.argoCDSupport }}
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+    {{- end }}
+spec:
+  template:
+    metadata:
+      name: "{{ .Release.Name }}-publish-endpoints-github"
+      labels:
+        app.kubernetes.io/component: post-install-publish-endpoints
+    spec:
+      {{- if .Values.serviceAccount.name }}
+      serviceAccountName: "{{ .Values.serviceAccount.name }}"
+      {{- end }}
+    containers:
+      - name: publish-endpoints
+        image: "{{ .Values.supportComponents.kubectl.image.name }}:{{ .Values.supportComponents.kubectl.image.tag }}"
+        command:
+          - "/bin/bash"
+          - "-c"
+        args: ['
+          echo "Validating that we can curl GitHub..."
+          curl -s -H "Authorization: token ${GITHUB_TOKEN}" -X GET "https://api.github.com/orgs/{{ .Values.github.owner }}"
+        ']
+        envFrom:
+        envFrom:
+          - secretRef:
+              name: {{ template "bitwarden.sharedCloudResourcesSecret" . }}
+          - configMapRef:
+              name: {{ .Release.Name }}-config-map
