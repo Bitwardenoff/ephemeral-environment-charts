@@ -1,6 +1,7 @@
 # Publishes the URI endpoints for the environment to a comment of the GitHub pull request.
 ---
 kind: Job
+apiVersion: batch/v1
 metadata:
   name: "{{ .Release.Name }}-publish-endpoints-github"
   labels:
