@@ -25,18 +25,18 @@ spec:
       serviceAccountName: "{{ .Values.serviceAccount.name }}"
       {{- end }}
       restartPolicy: Never
-    containers:
-      - name: publish-endpoints
-        image: "{{ .Values.supportComponents.kubectl.image.name }}:{{ .Values.supportComponents.kubectl.image.tag }}"
-        command:
-          - "/bin/bash"
-          - "-c"
-        args: ['
-          echo "Validating that we can curl GitHub..."
-          curl -s -H "Authorization: token ${GITHUB_TOKEN}" -X GET "https://api.github.com/orgs/{{ .Values.github.owner }}"
-        ']
-        envFrom:
-          - secretRef:
-              name: {{ template "bitwarden.sharedCloudResourcesSecret" . }}
-          - configMapRef:
-              name: {{ .Release.Name }}-config-map
+      containers:
+        - name: publish-endpoints
+          image: "{{ .Values.supportComponents.kubectl.image.name }}:{{ .Values.supportComponents.kubectl.image.tag }}"
+          command:
+            - "/bin/bash"
+            - "-c"
+          args: ['
+            echo "Validating that we can curl GitHub..."
+            curl -s -H "Authorization: token ${GITHUB_TOKEN}" -X GET "https://api.github.com/orgs/{{ .Values.github.owner }}"
+          ']
+          envFrom:
+            - secretRef:
+                name: {{ template "bitwarden.sharedCloudResourcesSecret" . }}
+            - configMapRef:
+                name: {{ .Release.Name }}-config-map
