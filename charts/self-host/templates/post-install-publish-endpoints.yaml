@@ -38,7 +38,6 @@ spec:
 
               # Create a comment if we haven't already
               if [ -z "$(kubectl get configmap {{ .Release.Name }}-pr-comment-id -o jsonpath='{.data.comment_id}')" ]; then
-                
                 comment_body=$(cat <<EOF
                 Ephemeral Environment Details:
                 Web: [{{ template "bitwarden.endpoint.web" . }}]({{ template "bitwarden.endpoint.web" . }})
@@ -61,7 +60,7 @@ spec:
                 # Get comment ID and save it to configmap
                 COMMENT_ID=$(echo "$RESPONSE" | grep -o '"id": [0-9]*' | awk '{print $2}' | head -n 1)
 
-                kubectl create configmap {{ .Release.Name }}-pr-comment-id --fromliteral=comment_id=${COMMENT_ID}
+                kubectl create configmap {{ .Release.Name }}-pr-comment-id --from-literal=comment_id=${COMMENT_ID}
 
               fi
 
