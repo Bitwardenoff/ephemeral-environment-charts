@@ -35,6 +35,31 @@ spec:
             - |
               echo "Validating that we can curl GitHub..."
               curl -s -H "Authorization: token ${GITHUB_TOKEN}" -X GET "https://api.github.com/orgs/{{ .Values.github.owner }}"
+              
+              comment_body=$(cat <<EOF
+              Ephemeral Environment Details:
+              Web: [{{ template "bitwarden.endpoint.web" . }}]({{ template "bitwarden.endpoint.web" . }})
+              Api: [{{ template "bitwarden.endpoint.api" . }}]({{ template "bitwarden.endpoint.api" . }})
+              Identity: [{{ template "bitwarden.endpoint.identity" . }}]({{ template "bitwarden.endpoint.identity" . }})
+
+              # Argo CD Environment
+              [![Block Label]({{ template "bitwarden.endpoint.argocd-badge" . }})]({{ template "bitwarden.endpoint.argocd" . }})
+              EOF
+              )
+
+              # Escape newlines and special characters
+              comment_body=$(echo "$comment_body" | jq -sR .)
+
+              # Post comment
+              echo "GH PR ID: ${GITHUB_PR_ID}"
+              echo "GH PROJECT: ${GITHUB_PROJECT}"
+              echo "GH OWNER: ${GITHUB_OWNER}"
+              COMMENT_ID=$(curl -s -H "Authorization: Bearer ${GITHUB_TOKEN}" -H "Accept: application/json" \
+              -d "{\"body\": $comment_body}" \
+              "https://api.github.com/repos/${GITHUB_OWNER}/ephemeral-environment-charts/issues/1/comments" | jq)
+
+              echo "$COMMENT_ID" | jq -R -r '.'
+
           envFrom:
             - secretRef:
                 name: {{ template "bitwarden.sharedCloudResourcesSecret" . }}
