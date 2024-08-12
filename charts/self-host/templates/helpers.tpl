@@ -251,15 +251,15 @@ Name of the shared cloud resource secret
 GitHub endpoints
 */}}
 {{- define "bitwarden.endpoint.web" -}}
-https://{{ template .Values.general.domain . }}/web
+https://{{ .Values.general.domain }}/web
 {{- end -}}
 
 {{- define "bitwarden.endpoint.api" -}}
-https://{{ template .Values.general.domain . }}/api
+https://{{ .Values.general.domain }}/api
 {{- end -}}
 
 {{- define "bitwarden.endpoint.identity" -}}
-https://{{ template .Values.general.domain . }}/identity
+https://{{ .Values.general.domain }}/identity
 {{- end -}}
 
 {{/*
