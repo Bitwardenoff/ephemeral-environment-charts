@@ -42,8 +42,6 @@ spec:
               Api: [{{ template "bitwarden.endpoint.api" . }}]({{ template "bitwarden.endpoint.api" . }})
               Identity: [{{ template "bitwarden.endpoint.identity" . }}]({{ template "bitwarden.endpoint.identity" . }})
 
-              # Argo CD Environment
-              [![Block Label]({{ template "bitwarden.endpoint.argocd-badge" . }})]({{ template "bitwarden.endpoint.argocd" . }})
               EOF
               )
 
