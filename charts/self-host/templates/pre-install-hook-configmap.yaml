@@ -10,7 +10,7 @@ metadata:
     {{- if .Values.argoCDSupport }}
     argocd.argoproj.io/hook: PreSync
     argocd.argoproj.io/sync-wave: "-2"
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded,BeforeHookCreation
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
     {{ end }}
 data:
   ACCEPT_EULA: "Y"
@@ -80,7 +80,7 @@ metadata:
     {{- if .Values.argoCDSupport }}
     argocd.argoproj.io/hook: PreSync
     argocd.argoproj.io/sync-wave: "0"
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded,BeforeHookCreation
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
     {{ end }}
 data:
   app-id.json: |-
@@ -114,7 +114,7 @@ metadata:
     {{- if .Values.argoCDSupport }}
     argocd.argoproj.io/hook: PreSync
     argocd.argoproj.io/sync-wave: "0"
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded,BeforeHookCreation
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
     {{ end }}
 data:
   keyConnectorSettings__webVaultUri: "https://{{ .Values.general.domain }}"
