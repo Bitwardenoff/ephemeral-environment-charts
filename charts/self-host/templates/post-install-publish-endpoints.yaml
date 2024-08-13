@@ -41,7 +41,6 @@ spec:
               Ephemeral Environment Details:
               Web: [{{ template "bitwarden.endpoint.web" . }}]({{ template "bitwarden.endpoint.web" . }})
               Api: [{{ template "bitwarden.endpoint.api" . }}]({{ template "bitwarden.endpoint.api" . }})
-              Identity: [{{ template "bitwarden.endpoint.identity" . }}]({{ template "bitwarden.endpoint.identity" . }})
               EOF
               )
 
