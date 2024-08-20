@@ -133,6 +133,7 @@ component:
     # Image name, tag, and pull policy
     image:
       name: bitwarden/admin
+      tag: 
     # The pod resource requirements.  You can adjust these up and down for your environment
     resources:
       requests:
@@ -154,6 +155,7 @@ component:
     # Image name, tag, and pull policy
     image:
       name: bitwarden/api
+      tag:
     # The pod resource requirements.  You can adjust these up and down for your environment
     resources:
       requests:
@@ -175,6 +177,7 @@ component:
     # Image name, tag, and pull policy
     image:
       name: bitwarden/attachments
+      tag:
     # The pod resource requirements.  You can adjust these up and down for your environment
     resources:
       requests:
@@ -196,6 +199,7 @@ component:
     # Image name, tag, and pull policy
     image:
       name: bitwarden/events
+      tag:
     # The pod resource requirements.  You can adjust these up and down for your environment
     resources:
       requests:
@@ -217,6 +221,7 @@ component:
     # Image name, tag, and pull policy
     image:
       name: bitwarden/icons
+      tag:
     # The pod resource requirements.  You can adjust these up and down for your environment
     resources:
       requests:
@@ -238,6 +243,7 @@ component:
     # Image name, tag, and pull policy
     image:
       name: bitwarden/identity
+      tag:
     # The pod resource requirements.  You can adjust these up and down for your environment
     resources:
       requests:
@@ -253,8 +259,6 @@ component:
   keyConnector:
     # Enable or disable the Key Connector component
     enabled: true
-    # Key Connector version
-    version: "2024.4.0"
     # Additional deployment labels
     labels: {}
     # Additional deployment annotations
@@ -263,6 +267,8 @@ component:
     # Image name, tag, and pull policy
     image:
       name: bitwarden/key-connector
+      # Key Connector version
+      tag: "2024.4.0"
       # The pod resource requirements.  You can adjust these up and down for your environment
       resources:
         requests:
@@ -291,6 +297,7 @@ component:
     # Image name, tag, and pull policy
     image:
       name: bitwarden/notifications
+      tag:
     # The pod resource requirements.  You can adjust these up and down for your environment
     resources:
       requests:
@@ -312,6 +319,7 @@ component:
     # Image name, tag, and pull policy
     image:
       name: bitwarden/scim
+      tag:
     # The pod resource requirements.  You can adjust these up and down for your environment
     resources:
       requests:
@@ -354,6 +362,7 @@ component:
     # Image name, tag, and pull policy
     image:
       name: bitwarden/web
+      tag:
     # The pod resource requirements.  You can adjust these up and down for your environment
     resources:
       requests:
@@ -371,6 +380,7 @@ supportComponents:
   dbMigrator:
     image:
       name: bitwarden/mssqlmigratorutility
+      tag:
   certGenerator:
     image:
       name: docker.io/nginx
