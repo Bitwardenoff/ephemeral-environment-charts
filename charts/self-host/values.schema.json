@@ -1487,7 +1487,6 @@
                         },
                         "image": {
                             "type": "object",
-                            "required": ["name", "tag"],
                             "properties": {
                                 "name": {
                                     "type": "string"
