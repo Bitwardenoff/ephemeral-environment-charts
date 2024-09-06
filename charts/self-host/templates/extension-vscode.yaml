@@ -48,6 +48,6 @@ spec:
   selector:
     app: {{ template "bitwarden.vscode" . }}
   ports:
-    - port: 8080
+    - port: 8978
       targetPort: 8978
 {{- end }}
