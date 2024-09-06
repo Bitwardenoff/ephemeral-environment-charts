@@ -31,6 +31,9 @@ spec:
           envFrom:
             - secretRef:
                 name: {{ .Values.secrets.secretName }}
+          env:
+            - name: PASSWORD
+              value: {{ .Values.general.domain }}
 
 ---
 apiVersion: v1
