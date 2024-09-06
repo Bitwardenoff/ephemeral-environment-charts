@@ -238,6 +238,13 @@ Name of the keys secret
 {{ template "bitwarden.fullname" . }}-secretkeys
 {{- end -}}
 
+{{/*
+Name of the extension vscode
+*/}}
+{{- define "bitwarden.vscode" -}}
+{{ template "bitwarden.fullname" . }}-vscode
+{{- end -}}
+
 
 {{/*
 Name of the shared cloud resource secret

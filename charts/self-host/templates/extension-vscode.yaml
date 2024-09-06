@@ -1,0 +1,50 @@
+{{- if .Values.extensions.vscode.enabled }}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "bitwarden.vscode" . }}
+  namespace: {{ .Release.Namespace }}
+  annotations: {{ toYaml .Values.extensions.vscode.annotations | nindent 4 }}
+  labels:
+    app: {{ template "bitwarden.vscode" . }}
+    app.kubernetes.io/component: vscode
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: {{ template "bitwarden.vscode" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "bitwarden.vscode" . }}
+    spec:
+      containers:
+        - name: vscode
+          image: "{{ .Values.extensions.vscode.image }}:{{ .Values.extensions.vscode.tag }}"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: {{ .Values.secrets.secretName }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "bitwarden.vscode" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ template "bitwarden.vscode" . }}
+    app.kubernetes.io/component: vscode
+spec:
+  selector:
+    app: {{ template "bitwarden.vscode" . }}
+  ports:
+    - port: 8080
+      targetPort: 8080
+{{- end }}

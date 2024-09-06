@@ -20,6 +20,14 @@ github:
   owner:
   prId:
 
+# Extensions that are deployed with the environment.
+extensions:
+  vscode:
+    enabled: true
+    annotations: {}
+    image: ghcr.io/coder/coder
+    tag: v2.14.3
+    
 general:
   # Domain name for the service
   domain: "REPLACE"
