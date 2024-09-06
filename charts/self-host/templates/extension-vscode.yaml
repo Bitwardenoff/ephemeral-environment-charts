@@ -27,7 +27,7 @@ spec:
           image: "{{ .Values.extensions.vscode.image }}:{{ .Values.extensions.vscode.tag }}"
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8080
+            - containerPort: 8978
           envFrom:
             - secretRef:
                 name: {{ .Values.secrets.secretName }}
@@ -49,5 +49,5 @@ spec:
     app: {{ template "bitwarden.vscode" . }}
   ports:
     - port: 8080
-      targetPort: 8080
+      targetPort: 8978
 {{- end }}

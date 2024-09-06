@@ -25,8 +25,8 @@ extensions:
   vscode:
     enabled: true
     annotations: {}
-    image: ghcr.io/coder/code-server
-    tag: 4.92.2-39
+    image: dbeaver/cloudbeaver-ee
+    tag: latest
     
 general:
   # Domain name for the service
