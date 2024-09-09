@@ -492,7 +492,7 @@ database:
       # accessMode: ReadWriteOnce
       # Override the storageClass specified in sharedStorageClassName
       # storageClass: "shared-storage"
-      size: 1Gi
+      size: 10Gi
       labels: {}
       annotations:
         argocd.argoproj.io/hook: PreSync
@@ -529,6 +529,8 @@ database:
   updateStrategy: OnDelete
   # This will set the Kubernetes container security context
   securityContext:
+    runAsUser: 0
+    runAsGroup: 0
   # Run the pod under a service account you create.  This is especially useful for OpenShift deployments
   podServiceAccount:
 
