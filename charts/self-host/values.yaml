@@ -497,7 +497,7 @@ database:
       accessMode: ReadWriteOnce
       # Override the storageClass specified in sharedStorageClassName
       storageClass: "managed"
-      size: 10Gi
+      size: 20Gi
       labels: {}
       annotations:
         argocd.argoproj.io/hook: PreSync
