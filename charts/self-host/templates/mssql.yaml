@@ -47,6 +47,7 @@ spec:
           volumeMounts:
             - name: mssql-data
               mountPath: /var/opt/mssql/data
+              subPath: data
             - name: mssql-log
               mountPath: /var/opt/mssql/log
             - name: mssql-backups
