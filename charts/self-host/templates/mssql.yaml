@@ -37,7 +37,7 @@ spec:
     {{- end }}
       initContainers:
         - name: init-permissions
-          image: "{{ .Values.supportComponents.kubectl.image.name }}:{{ .Values.supportComponents.kubectl.image.tag }}"
+          image: busybox
           command: ['sh', '-c']
           args:
             - |
