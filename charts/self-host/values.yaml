@@ -489,9 +489,9 @@ database:
       # Use an existing PVC by specifying the name.
       # existingClaim: claimName
       # Override the accessMode specified in general.volumeAccessMode
-      accessMode: ReadWriteOnce
+      # accessMode: ReadWriteOnce
       # Override the storageClass specified in sharedStorageClassName
-      storageClass: "managed"
+      # storageClass: "managed"
       size: 10Gi
       labels: {}
       annotations:
@@ -502,9 +502,9 @@ database:
       # Use an existing PVC by specifying the name.
       # existingClaim: claimName
       # Override the accessMode specified in general.volumeAccessMode
-      accessMode: ReadWriteOnce
+      # accessMode: ReadWriteOnce
       # Override the storageClass specified in sharedStorageClassName
-      storageClass: "managed"
+      # storageClass: "managed"
       size: 25Gi
       labels: {}
       annotations:
@@ -515,9 +515,9 @@ database:
       # Use an existing PVC by specifying the name.
       # existingClaim: claimName
       # Override the accessMode specified in general.volumeAccessMode
-      accessMode: ReadWriteOnce
+      # accessMode: ReadWriteOnce
       # Override the storageClass specified in sharedStorageClassName
-      storageClass: "managed"
+      # storageClass: "managed"
       size: 10Gi
       labels: {}
       annotations:
