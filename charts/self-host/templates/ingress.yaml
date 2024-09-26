@@ -7,7 +7,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   annotations:
     {{- if .Values.argoCDSupport }}
-    argocd.argoproj.io/external-link: "Go to Environment|https://{{ .Values.general.domain }}"
+    link.argocd.argoproj.io/environment: "Go to Environment|https://{{ .Values.general.domain }}"
     {{- end }}
     {{- if .Values.general.ingress.tls.clusterIssuer }}
     cert-manager.io/cluster-issuer: {{ .Values.general.ingress.tls.clusterIssuer }}
