@@ -1,26 +1,11 @@
-# Optional - Override the chart name if desired
 fullnameOverride: ""
 nameOverride: ""
-
-# LaunchDarkly feature flags
-# Flags can be added as key-value pairs, e.g., flagName: true. See the documentation for more information.
-# See https://contributing.bitwarden.com/contributing/feature-flags/#flag-data-sources for more information.
 featureFlags: {}
-
-# Enable Argo CD support
-# Adds annotations for sync waves and hooks on various jobs to ensure proper ordering of resources.
-# The existing hooks aren't ordered for Argo CD, so this is required for Argo CD deployments.
-# Components still require sync wave annotations and can be defined in the component section.
 argoCDSupport: true
-
-# GitHub values to be used for interacting with the GitHub API.
-# These are not required, but functionality will be disabled if they are not provided.
 github:
-  project:
-  owner:
-  prId:
-
-# Optional extensions that can be toggled for additional functionality.
+  project: null
+  owner: null
+  prId: null
 extensions:
   dbClient:
     enabled: false
@@ -30,29 +15,19 @@ extensions:
       tag: latest
     service:
       port: 8978
-
 general:
-  # Domain name for the service
-  domain: "REPLACE"
+  domain: REPLACE
   ingress:
-    # Set to false if using a custom ingress
     enabled: true
-    # Current supported values for ingress type include: nginx
-    className: "nginx"
-     ## - Annotations to add to the Ingress resource.
+    className: nginx
     annotations:
       nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
       nginx.ingress.kubernetes.io/use-regex: "true"
       nginx.ingress.kubernetes.io/rewrite-target: /$1
-    ## - Labels to add to the Ingress resource
     labels: {}
-    # Certificate options
     tls:
-      # TLS certificate secret name
-      name:
-      # Cluster cert issuer (ex. Let's Encrypt) name if one exists
-      clusterIssuer:
-    # Ingress path configuration - The samples provided are for Nginx. Examples with other Ingress providers are in the chart Readme on GitHub
+      name: null
+      clusterIssuer: null
     paths:
       web:
         path: /(.*)
@@ -90,324 +65,215 @@ general:
       mssql:
         path: /(mssql/.*)
         pathType: ImplementationSpecific
-
-  # Override application container version tags.  Theses will be versioned with the chart and need not be changed in most circumstances.
   coreVersionOverride: ""
   webVersionOverride: ""
-  # Disable account registration on web vault
   disableUserRegistration: "false"
-  # Comma-separated list of email addresses for Admin users
   admins: "false"
   email:
-    # Email address used for invitations, typically no-reply@smtp-host
-    replyToEmail: "no-reply@bitwarden.localhost"
-    # Your SMTP server hostname (recommended) or IP address
-    smtpHost: "smtp.sendgrid.net"
-    # The SMTP port used by the SMTP server
+    replyToEmail: no-reply@bitwarden.localhost
+    smtpHost: smtp.sendgrid.net
     smtpPort: "587"
-    # Whether your SMTP server uses an encryption protocol, "true" for SSL, "false" for TLS
     smtpSsl: "false"
-  # Custom labels to add throughout the installation
   labels: {}
-  # Specifies the access mode for persistent volume claims.  This should not be changed in most cases, and the allowable
-  # values are only ReadWriteMany and ReadWriteOnce.  Please read https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes
-  # to better understand these options before changing this value.
-  volumeAccessMode: "ReadWriteMany"
-  # Set to true to allow communication between your server and our cloud system. Doing so enables billing and license sync.  Please see: https://bitwarden.com/help/self-host-an-organization/#step-4-setup-billing-and-license-sync
+  volumeAccessMode: ReadWriteMany
   enableCloudCommunication: false
-  # Cloud region for sync.  Please see: https://bitwarden.com/help/families-for-enterprise-self-hosted/#step-1-enable-cloud-communication
   cloudRegion: US
-  # Specify Bitwarden cloud URI endpoint. Default to US/EU production cloud based on cloudRegion.
-  cloudIdentityApiUri: "https://identity.usdev.bitwarden.pw"
-  cloudApiUri: "https://api.usdev.bitwarden.pw"
-  cloudPushRelayBaseUri:
-
-# Specify the name of the shared storage class
-# This storage class requires ReadWriteMany.  You will need to provide your own storage class.  Storage classes with automatic volume previsioners are recommended.
-sharedStorageClassName: "shared-storage"
-
-# Secrets are required.  Review the chart README on GitHub for details on creating these secrets
+  cloudIdentityApiUri: https://identity.usdev.bitwarden.pw
+  cloudApiUri: https://api.usdev.bitwarden.pw
+  cloudPushRelayBaseUri: null
+sharedStorageClassName: shared-storage
 secrets:
   secretName: custom-secret
-  # Secrets can either be created via 'kubectl create secrets' or by using a secret provider class.  If using the latter, specify the name here
-  secretProviderClass:
-
-  # Azure Key Vault name for shared cloud resources secret
+  secretProviderClass: null
   azureKeyVaultName: ephemeral-env-kv
-
-# Settings for individual service containers
 component:
-  # The Admin component
   admin:
-    # Additional deployment annotations
     annotations: {}
-    # Additional deployment labels
     labels: {}
-    # Image name, tag, and pull policy
     image:
       name: bitwardenprod.azurecr.io/admin
       tag: dev
-    # The pod resource requirements.  You can adjust these up and down for your environment
     resources:
       requests:
-        memory: "64Mi"
-        cpu: "50m"
+        memory: 64Mi
+        cpu: 50m
       limits:
-        memory: "128Mi"
-        cpu: "100m"
-    # Specifies the strategy used to replace old Pods by new ones. The value can be "Recreate" or "RollingUpdate". "RollingUpdate" is the default value.
+        memory: 128Mi
+        cpu: 100m
     deploymentStrategy: RollingUpdate
-    # This will set the Kubernetes container security context
-    securityContext:
-    # Run the pod under a service account you create.  This is especially useful for OpenShift deployments
-    podServiceAccount:
+    securityContext: null
+    podServiceAccount: null
   api:
-    # Additional deployment annotations
     annotations: {}
-    # Additional deployment labels
     labels: {}
-    # Image name, tag, and pull policy
     image:
       name: bitwardenprod.azurecr.io/api
       tag: dev
-    # The pod resource requirements.  You can adjust these up and down for your environment
     resources:
       requests:
-        memory: "128Mi"
-        cpu: "100m"
+        memory: 128Mi
+        cpu: 100m
       limits:
-        memory: "256Mi"
-        cpu: "200m"
-    # Specifies the strategy used to replace old Pods by new ones. The value can be "Recreate" or "RollingUpdate". "RollingUpdate" is the default value.
+        memory: 256Mi
+        cpu: 200m
     deploymentStrategy: RollingUpdate
-    # This will set the Kubernetes container security context
-    securityContext:
-    # Run the pod under a service account you create.  This is especially useful for OpenShift deployments
-    podServiceAccount:
+    securityContext: null
+    podServiceAccount: null
   attachments:
-    # Additional deployment annotations
     annotations: {}
-    # Additional deployment labels
     labels: {}
-    # Image name, tag, and pull policy
     image:
       name: bitwardenprod.azurecr.io/attachments
       tag: dev
-    # The pod resource requirements.  You can adjust these up and down for your environment
     resources:
       requests:
-        memory: "64Mi"
-        cpu: "50m"
+        memory: 64Mi
+        cpu: 50m
       limits:
-        memory: "128Mi"
-        cpu: "100m"
-    # Specifies the strategy used to replace old Pods by new ones. The value can be "Recreate" or "RollingUpdate". "RollingUpdate" is the default value.
+        memory: 128Mi
+        cpu: 100m
     deploymentStrategy: RollingUpdate
-    # This will set the Kubernetes container security context
-    securityContext:
-    # Run the pod under a service account you create.  This is especially useful for OpenShift deployments
-    podServiceAccount:
+    securityContext: null
+    podServiceAccount: null
   events:
-    # Additional deployment annotations
     annotations: {}
-    # Additional deployment labels
     labels: {}
-    # Image name, tag, and pull policy
     image:
       name: bitwardenprod.azurecr.io/events
       tag: dev
-    # The pod resource requirements.  You can adjust these up and down for your environment
     resources:
       requests:
-        memory: "64Mi"
-        cpu: "50m"
+        memory: 64Mi
+        cpu: 50m
       limits:
-        memory: "128Mi"
-        cpu: "100m"
-    # Specifies the strategy used to replace old Pods by new ones. The value can be "Recreate" or "RollingUpdate". "RollingUpdate" is the default value.
+        memory: 128Mi
+        cpu: 100m
     deploymentStrategy: RollingUpdate
-    # This will set the Kubernetes container security context
-    securityContext:
-    # Run the pod under a service account you create.  This is especially useful for OpenShift deployments
-    podServiceAccount:
+    securityContext: null
+    podServiceAccount: null
   icons:
-    # Additional deployment annotations
     annotations: {}
-    # Additional deployment labels
     labels: {}
-    # Image name, tag, and pull policy
     image:
       name: bitwardenprod.azurecr.io/icons
       tag: dev
-    # The pod resource requirements.  You can adjust these up and down for your environment
     resources:
       requests:
-        memory: "64Mi"
-        cpu: "50m"
+        memory: 64Mi
+        cpu: 50m
       limits:
-        memory: "128Mi"
-        cpu: "100m"
-    # Specifies the strategy used to replace old Pods by new ones. The value can be "Recreate" or "RollingUpdate". "RollingUpdate" is the default value.
+        memory: 128Mi
+        cpu: 100m
     deploymentStrategy: RollingUpdate
-    # This will set the Kubernetes container security context
-    securityContext:
-    # Run the pod under a service account you create.  This is especially useful for OpenShift deployments
-    podServiceAccount:
+    securityContext: null
+    podServiceAccount: null
   identity:
-    # Additional deployment annotations
     annotations: {}
-    # Additional deployment labels
     labels: {}
-    # Image name, tag, and pull policy
     image:
       name: bitwardenprod.azurecr.io/identity
       tag: dev
-    # The pod resource requirements.  You can adjust these up and down for your environment
     resources:
       requests:
-        memory: "128Mi"
-        cpu: "100m"
+        memory: 128Mi
+        cpu: 100m
       limits:
-        memory: "256Mi"
-        cpu: "200m"
-    # Specifies the strategy used to replace old Pods by new ones. The value can be "Recreate" or "RollingUpdate". "RollingUpdate" is the default value.
+        memory: 256Mi
+        cpu: 200m
     deploymentStrategy: RollingUpdate
-    # This will set the Kubernetes container security context
-    securityContext:
-    # Run the pod under a service account you create.  This is especially useful for OpenShift deployments
-    podServiceAccount:
+    securityContext: null
+    podServiceAccount: null
   keyConnector:
-    # Enable or disable the Key Connector component
     enabled: false
-    # Additional deployment annotations
     annotations: {}
-    # Additional deployment labels
     labels: {}
-    # Image name, tag, and pull policy
     image:
       name: bitwardenprod.azurecr.io/key-connector
-    # Key Connector version
-      tag: "2024.8.0"
-    # The pod resource requirements.  You can adjust these up and down for your environment
+      tag: 2024.8.0
     resources:
       requests:
-        memory: "64Mi"
-        cpu: "50m"
+        memory: 64Mi
+        cpu: 50m
       limits:
-        memory: "128Mi"
-        cpu: "100m"
-    # Specifies the strategy used to replace old Pods by new ones. The value can be "Recreate" or "RollingUpdate". "RollingUpdate" is the default value.
+        memory: 128Mi
+        cpu: 100m
     deploymentStrategy: RollingUpdate
-    # This will set the Kubernetes container security context
-    securityContext:
-    # Run the pod under a service account you create.  This is especially useful for OpenShift deployments
-    podServiceAccount:
-    # Key Connector configuration
+    securityContext: null
+    podServiceAccount: null
     config:
-      databaseProvider: "json"
-      rsaKeyProvider: "certificate"
-      certificateProvider: "filesystem"
-
+      databaseProvider: json
+      rsaKeyProvider: certificate
+      certificateProvider: filesystem
   notifications:
-    # Additional deployment annotations
     annotations: {}
-    # Additional deployment labels
     labels: {}
-    # Image name, tag, and pull policy
     image:
       name: bitwardenprod.azurecr.io/notifications
       tag: dev
-    # The pod resource requirements.  You can adjust these up and down for your environment
     resources:
       requests:
-        memory: "64Mi"
-        cpu: "50m"
+        memory: 64Mi
+        cpu: 50m
       limits:
-        memory: "128Mi"
-        cpu: "100m"
-    # Specifies the strategy used to replace old Pods by new ones. The value can be "Recreate" or "RollingUpdate". "RollingUpdate" is the default value.
+        memory: 128Mi
+        cpu: 100m
     deploymentStrategy: RollingUpdate
-    # This will set the Kubernetes container security context
-    securityContext:
-    # Run the pod under a service account you create.  This is especially useful for OpenShift deployments
-    podServiceAccount:
+    securityContext: null
+    podServiceAccount: null
   scim:
-    # Additional deployment annotations
     annotations: {}
-    # SCIM is disabled by default.  To use this service, enable it below and set an appropriate Ingress path
     enabled: false
-    # Additional deployment labels
     labels: {}
-    # Image name, tag, and pull policy
     image:
       name: bitwardenprod.azurecr.io/scim
       tag: dev
-    # The pod resource requirements.  You can adjust these up and down for your environment
     resources:
       requests:
-        memory: "64Mi"
-        cpu: "50m"
+        memory: 64Mi
+        cpu: 50m
       limits:
-        memory: "128Mi"
-        cpu: "100m"
-    # Specifies the strategy used to replace old Pods by new ones. The value can be "Recreate" or "RollingUpdate". "RollingUpdate" is the default value.
+        memory: 128Mi
+        cpu: 100m
     deploymentStrategy: RollingUpdate
-    # This will set the Kubernetes container security context
-    securityContext:
-    # Run the pod under a service account you create.  This is especially useful for OpenShift deployments
-    podServiceAccount:
+    securityContext: null
+    podServiceAccount: null
   sso:
-    # Additional deployment annotations
     annotations: {}
-    # Additional deployment labels
     labels: {}
-    # Image name, tag, and pull policy
     image:
       name: bitwardenprod.azurecr.io/sso
       tag: dev
-    # The pod resource requirements.  You can adjust these up and down for your environment
     resources:
       requests:
-        memory: "64Mi"
-        cpu: "50m"
+        memory: 64Mi
+        cpu: 50m
       limits:
-        memory: "128Mi"
-        cpu: "100m"
-    # Specifies the strategy used to replace old Pods by new ones. The value can be "Recreate" or "RollingUpdate". "RollingUpdate" is the default value.
+        memory: 128Mi
+        cpu: 100m
     deploymentStrategy: RollingUpdate
-    # This will set the Kubernetes container security context
-    securityContext:
-    # Run the pod under a service account you create.  This is especially useful for OpenShift deployments
-    podServiceAccount:
+    securityContext: null
+    podServiceAccount: null
   web:
-    # Additional deployment annotations
     annotations: {}
-    # Additional deployment labels
     labels: {}
-    # Image name, tag, and pull policy
     image:
       name: bitwardenprod.azurecr.io/web
       tag: dev
-    # The pod resource requirements.  You can adjust these up and down for your environment
     resources:
       requests:
-        memory: "64Mi"
-        cpu: "50m"
+        memory: 64Mi
+        cpu: 50m
       limits:
-        memory: "128Mi"
-        cpu: "100m"
-    # Specifies the strategy used to replace old Pods by new ones. The value can be "Recreate" or "RollingUpdate". "RollingUpdate" is the default value.
+        memory: 128Mi
+        cpu: 100m
     deploymentStrategy: RollingUpdate
-    # This will set the Kubernetes container security context
-    securityContext:
-    # Run the pod under a service account you create.  This is especially useful for OpenShift deployments
-    podServiceAccount:
-# Images used for jobs and init containers
+    securityContext: null
+    podServiceAccount: null
 supportComponents:
   dbMigrator:
     image:
       name: bitwardenprod.azurecr.io/mssqlmigratorutility
-      tag: dev
+      tag: dev@sha256:942811560cfead755982621f8393a97fbadf99dd1156e52a957c5c5f165be78b
   certGenerator:
     image:
       name: docker.io/nginx
@@ -416,96 +282,48 @@ supportComponents:
     image:
       name: bitnami/kubectl
       tag: 1.21
-# Data volume sizes for shared PVCs
 volume:
   dataprotection:
-    # Use an existing PVC by specifying the name.
-    # existingClaim: claimName
-    # Override the accessMode specified in general.volumeAccessMode
-    # accessMode: ReadWriteOnce
-    # Override the storageClass specified in sharedStorageClassName
-    # storageClass: "shared-storage"
-    size: "1Gi"
+    size: 1Gi
     labels: {}
     annotations: {}
   attachments:
-    # Use an existing PVC by specifying the name.
-    # existingClaim: claimName
-    # Override the accessMode specified in general.volumeAccessMode
-    # accessMode: ReadWriteOnce
-    # Override the storageClass specified in sharedStorageClassName
-    # storageClass: "shared-storage"
     size: 1Gi
     labels: {}
     annotations: {}
   licenses:
-    # Use an existing PVC by specifying the name.
-    # existingClaim: claimName
-    # Override the accessMode specified in general.volumeAccessMode
-    # accessMode: ReadWriteOnce
-    # Override the storageClass specified in sharedStorageClassName
-    # storageClass: "shared-storage"
     size: 1Gi
     labels: {}
     annotations: {}
   logs:
-    # Logs are disabled by default
     enabled: false
-    # Use an existing PVC by specifying the name.
-    # existingClaim: claimName
-    # Override the accessMode specified in general.volumeAccessMode
-    # accessMode: ReadWriteOnce
-    # Override the storageClass specified in sharedStorageClassName
-    # storageClass: "shared-storage"
     size: 1Gi
     labels: {}
     annotations: {}
-
-#
-# Configure service account for pre- and post-install hooks
-#
 serviceAccount:
   name: service-account
-  # Certain instances will prequire the creation of a pre-deployed service account.  For instance, AWS IAM enabled service accounts need to be created outside
-  # of the chart to allow for setting of permissions on other AWS services like Secrets Manager
   deployRolesOnly: false
-
-#
-# Configure database
-#
 database:
-  # deploy the database pod?  if false, a connection string to a SQL Server will need to be provided through one of the configuration providers.
   enabled: true
-  # Additional annotations
   annotations:
     argocd.argoproj.io/hook: PreSync
     argocd.argoproj.io/sync-wave: "0"
     argocd.argoproj.io/hook-delete-policy: HookFailed
-  # Labels to add to the MSSQL deployment
   labels: {}
-  # Image name, tag, and pull policy
   image:
     name: mcr.microsoft.com/mssql/server
-    # Tag of the image to use. (Defaults to general.coreVersion)
     tag: 2022-CU11-ubuntu-22.04
-  # The container is limited to the resources below.  Adjust for your environment.
   resources:
     requests:
-      memory: "2G"
-      cpu: "100m"
+      memory: 2G
+      cpu: 100m
     limits:
-      memory: "2G"
-      cpu: "500m"
-
-  # The MSSQL volumes for the PVCs
+      memory: 2G
+      cpu: 500m
   volume:
     backups:
-      # Use an existing PVC by specifying the name.
-      # existingClaim: claimName
-      # Override the accessMode specified in general.volumeAccessMode
       accessMode: ReadWriteOnce
-      # Override the storageClass specified in sharedStorageClassName
-      storageClass: "managed"
+      storageClass: managed
       size: 10Gi
       labels: {}
       annotations:
@@ -513,12 +331,8 @@ database:
         argocd.argoproj.io/sync-wave: "0"
         argocd.argoproj.io/hook-delete-policy: HookFailed
     data:
-      # Use an existing PVC by specifying the name.
-      # existingClaim: claimName
-      # Override the accessMode specified in general.volumeAccessMode
       accessMode: ReadWriteOnce
-      # Override the storageClass specified in sharedStorageClassName
-      storageClass: "managed"
+      storageClass: managed
       size: 20Gi
       labels: {}
       annotations:
@@ -526,28 +340,17 @@ database:
         argocd.argoproj.io/sync-wave: "0"
         argocd.argoproj.io/hook-delete-policy: HookFailed
     log:
-      # Use an existing PVC by specifying the name.
-      # existingClaim: claimName
-      # Override the accessMode specified in general.volumeAccessMode
       accessMode: ReadWriteOnce
-      # Override the storageClass specified in sharedStorageClassName
-      storageClass: "managed"
+      storageClass: managed
       size: 10Gi
       labels: {}
       annotations:
         argocd.argoproj.io/hook: PreSync
         argocd.argoproj.io/sync-wave: "0"
         argocd.argoproj.io/hook-delete-policy: HookFailed
-  # Specifies the strategy used to replace old Pods by new ones. The value can be "OnDelete" or "RollingUpdate". "OnDelete" is the default value.
-  # When set to OnDelete, the SQL pod will not be recreated automatically on update.  It must be manually deleted to update.
   updateStrategy: OnDelete
-  # This will set the Kubernetes container security context
-  securityContext:
-  # Run the pod under a service account you create.  This is especially useful for OpenShift deployments
-  podServiceAccount:
-
-# You can specify raw Kubernetes manifests that will be applied before or after the base Helm install.
-# Please see the chart README in GitHub for more information and examples.
+  securityContext: null
+  podServiceAccount: null
 rawManifests:
   preInstall: []
   postInstall: []
